@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Groupe : {{ party.name }}{% endblock %}
+
+{% block body %}
+<h1>{{ party.name }}</h1>
+
+<p>{{ party.description }}</p>
+<p>
+    Taille max : {{ party.maxSize }} <br>
+    Membres actuels : {{ party.characters|length }}
+</p>
+
+<hr>
+
+<h2>Personnages inscrits dans ce groupe</h2>
+
+<ul>
+    {% for member in party.characters %}
+        <li>
+            {{ member.name }} (niveau {{ member.level }})
+            {# Bouton pour se désinscrire si le personnage appartient à l'utilisateur #}
+            {% if member.user == app.user %}
+                <a href="{{ path('party_leave', { id: party.id, characterId: member.id }) }}"
+                   class="btn btn-danger btn-sm">
+                    Se désinscrire
+                </a>
+            {% endif %}
+        </li>
+    {% else %}
+        <li>Aucun membre pour le moment.</li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<h2>Mes personnages</h2>
+
+<ul>
+    {% for character in userCharacters %}
+        <li>
+            {{ character.name }} (niveau {{ character.level }})
+
+            {% set isMember = party.characters.contains(character) %}
+            {% set isFull = party.characters|length >= party.maxSize %}
+
+            {% if isMember %}
+                {# Déjà inscrit → bouton leave #}
+                <a href="{{ path('party_leave', { id: party.id, characterId: character.id }) }}"
+                   class="btn btn-warning btn-sm">
+                    Se désinscrire
+                </a>
+
+            {% elseif isFull %}
+                {# Groupe plein → bouton désactivé #}
+                <button class="btn btn-secondary btn-sm" disabled>
+                    Groupe complet
+                </button>
+
+            {% else %}
+                {# Peut rejoindre → bouton join #}
+                <a href="{{ path('party_join', { id: party.id, characterId: character.id }) }}"
+                   class="btn btn-success btn-sm">
+                    Rejoindre
+                </a>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
+
+#[Route('/party', name: 'party_index')]
+public function index(PartyRepository $partyRepository): Response
+{
+    return $this->render('party/index.html.twig', [
+        'parties' => $partyRepository->findAll(),
+    ]);
+}

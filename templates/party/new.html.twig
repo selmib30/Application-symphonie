@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un groupe{% endblock %}
+
+{% block body %}
+<h1>Créer un groupe d'aventure</h1>
+
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.maxSize) }}
+
+    <button class="btn btn-primary">Créer</button>
+{{ form_end(form) }}
+{% endblock %}

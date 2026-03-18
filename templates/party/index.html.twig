@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Groupes d'aventure{% endblock %}
+
+{% block body %}
+<h1>Liste des groupes d'aventure</h1>
+
+<a href="{{ path('party_new') }}" class="btn btn-primary">Créer un groupe</a>
+
+<ul>
+    {% for party in parties %}
+        <li>
+            <strong>{{ party.name }}</strong>
+            ({{ party.characters|length }}/{{ party.maxSize }} membres)
+            <br>
+            {{ party.description }}
+
+            <br>
+            <a href="{{ path('party_show', { id: party.id }) }}" class="btn btn-info btn-sm">
+                Voir le groupe
+            </a>
+        </li>
+    {% else %}
+        <li>Aucun groupe pour le moment.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

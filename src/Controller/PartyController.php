@@ -16,12 +16,27 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/party')]
 class PartyController extends AbstractController
 {
+    // =====================================================================
+    // TACHE 3 : Filtre des groupes complets / avec places disponibles (GET)
+    // =====================================================================
+    #[Route('', name: 'party_index')]
+    public function index(Request $request, PartyRepository $partyRepository): Response
+    {
+        $filter = $request->query->get('filter'); // 'full', 'available', ou null
+        $parties = $partyRepository->findWithFilter($filter);
+
+        return $this->render('party/index.html.twig', [
+            'parties'       => $parties,
+            'currentFilter' => $filter,
+        ]);
+    }
+
     #[Route('/{id}', name: 'party_show')]
     public function show(Party $party, CharacterRepository $characterRepository): Response
     {
         $userCharacters = $characterRepository->findBy(['user' => $this->getUser()]);
 
-        return $this->render('party/GroupCharacter.html.twig', [
+        return $this->render('party/GroupeCharacter.html.twig', [
             'party' => $party,
             'userCharacters' => $userCharacters,
         ]);
@@ -54,7 +69,6 @@ class PartyController extends AbstractController
 
         return $this->redirectToRoute('party_show', ['id' => $party->getId()]);
     }
-
 
     #[Route('/party/new', name: 'party_new')]
     public function new(Request $request, EntityManagerInterface $em): Response

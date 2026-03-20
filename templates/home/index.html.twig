@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil | Symphonie des Heros{% endblock %}
+
+{% block body %}
+    <main class="home-page">
+        <section class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">Createur DnD 5e</p>
+                <h1>Forge ton personnage et lance ta prochaine campagne.</h1>
+                <p class="hero-text">
+                    Construis un aventurier memorable, assemble ton groupe et prepare des fiches
+                    claires pour vos sessions Donjons & Dragons.
+                </p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href="{{ path('party_new') }}">Creer un groupe</a>
+                    <a class="button button-secondary" href="{{ path('party_index') }}">Voir les groupes</a>
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <span class="card-badge">Fiche rapide</span>
+                <h2>Lyra Ventgris</h2>
+                <p class="card-subtitle">Barde demi-elfe - Niveau 5</p>
+                <ul class="stat-list">
+                    <li><strong>For</strong><span>10</span></li>
+                    <li><strong>Dex</strong><span>16</span></li>
+                    <li><strong>Con</strong><span>13</span></li>
+                    <li><strong>Int</strong><span>12</span></li>
+                    <li><strong>Sag</strong><span>11</span></li>
+                    <li><strong>Cha</strong><span>18</span></li>
+                </ul>
+                <p class="card-note">Inspirations, equipement et progression regroupes au meme endroit.</p>
+            </div>
+        </section>
+
+        <section class="feature-grid">
+            <article class="feature-card">
+                <h3>Creation guidee</h3>
+                <p>Classe, race, competences et historique sont presentes dans un parcours simple a suivre.</p>
+            </article>
+            <article class="feature-card">
+                <h3>Groupes d'aventure</h3>
+                <p>Monte une equipe, gere les places disponibles et retrouve rapidement quels heros y participent.</p>
+            </article>
+            <article class="feature-card">
+                <h3>Lecture rapide en session</h3>
+                <p>Les informations importantes restent visibles pour jouer sans fouiller dans une feuille papier.</p>
+            </article>
+        </section>
+    </main>
+{% endblock %}

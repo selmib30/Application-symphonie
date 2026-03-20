@@ -19,11 +19,10 @@
     {% for member in party.characters %}
         <li>
             {{ member.name }} (niveau {{ member.level }})
-            {# Bouton pour se désinscrire si le personnage appartient à l'utilisateur #}
             {% if member.user == app.user %}
                 <a href="{{ path('party_leave', { id: party.id, characterId: member.id }) }}"
                    class="btn btn-danger btn-sm">
-                    Se désinscrire
+                    Se desinscrire
                 </a>
             {% endif %}
         </li>
@@ -45,20 +44,17 @@
             {% set isFull = party.characters|length >= party.maxSize %}
 
             {% if isMember %}
-                {# Déjà inscrit → bouton leave #}
                 <a href="{{ path('party_leave', { id: party.id, characterId: character.id }) }}"
                    class="btn btn-warning btn-sm">
-                    Se désinscrire
+                    Se desinscrire
                 </a>
 
             {% elseif isFull %}
-                {# Groupe plein → bouton désactivé #}
                 <button class="btn btn-secondary btn-sm" disabled>
                     Groupe complet
                 </button>
 
             {% else %}
-                {# Peut rejoindre → bouton join #}
                 <a href="{{ path('party_join', { id: party.id, characterId: character.id }) }}"
                    class="btn btn-success btn-sm">
                     Rejoindre
@@ -69,11 +65,3 @@
 </ul>
 
 {% endblock %}
-
-#[Route('/party', name: 'party_index')]
-public function index(PartyRepository $partyRepository): Response
-{
-    return $this->render('party/index.html.twig', [
-        'parties' => $partyRepository->findAll(),
-    ]);
-}

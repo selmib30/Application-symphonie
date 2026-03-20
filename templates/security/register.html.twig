@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription | Forge des Heros{% endblock %}
+
+{% block body %}
+    <main class="auth-page">
+        <section class="auth-panel">
+            <div class="auth-copy">
+                <p class="eyebrow">Inscription</p>
+                <h1>Cree ton compte aventurier.</h1>
+                <p>Enregistre tes futures fiches DnD, organise tes groupes et centralise ta progression.</p>
+            </div>
+
+            <div class="auth-form-card">
+                <h2>Creer un compte</h2>
+
+                {{ form_start(registrationForm) }}
+                    {{ form_row(registrationForm.username) }}
+                    {{ form_row(registrationForm.email) }}
+                    {{ form_row(registrationForm.plainPassword) }}
+                    <button class="button button-primary auth-submit" type="submit">Inscription</button>
+                {{ form_end(registrationForm) }}
+
+                <p class="auth-link">Deja inscrit ? <a href="{{ path('app_login') }}">Connexion</a></p>
+            </div>
+        </section>
+    </main>
+{% endblock %}

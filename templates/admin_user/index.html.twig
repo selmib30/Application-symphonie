@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Utilisateurs - Admin{% endblock %}
+
+{% block body %}
+    <style>
+        .admin-container {
+            margin: 2em auto;
+            max-width: 1000px;
+            width: 90%;
+            background-color: #fcf5e8; /* Fond beige parchemin */
+            padding: 20px;
+            border: 2px solid #4a3728;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #4a3728;
+            text-align: center;
+            margin-bottom: 1em;
+            font-family: 'serif';
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: white;
+        }
+
+        .user-table th {
+            background-color: #4a3728;
+            color: #fcf5e8;
+            padding: 12px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        .user-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2d1b3;
+            color: #333;
+        }
+
+        .user-table tr:hover {
+            background-color: #f2e4cf;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            background-color: #e2d1b3;
+            color: #4a3728;
+        }
+
+        .role-admin {
+            background-color: #9e2a1f; /* Rouge pour l'admin */
+            color: white;
+        }
+    </style>
+
+    <div class="admin-container">
+        <h1>Liste des Membres de la Forge</h1>
+
+        <table class="user-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom d'aventurier</th>
+                <th>Email</th>
+                <th>Rôles</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td><strong>#{{ user.id }}</strong></td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% for role in user.roles %}
+                            <span class="role-badge {{ role == 'ROLE_ADMIN' ? 'role-admin' : '' }}">
+                            {{ role|replace({'ROLE_': ''}) }}
+                        </span>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

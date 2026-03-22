@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Grimoire des Classes - Admin{% endblock %}
+
+{% block body %}
+    {% block stylesheets %}
+        {# On charge le CSS spécifique à l'édition #}
+        <link rel="stylesheet" href="{{ asset('styles/admin_index.css') }}">
+    {% endblock %}
+
+    <div class="admin-container">
+        <div class="header-section">
+            <h1>Grimoire des Classes</h1>
+            <a href="{{ path('app_character_class_new') }}" class="btn-create">⚔️ Forger une classe</a>
+        </div>
+
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th style="width: 50px;">ID</th>
+                <th style="width: 150px;">Nom</th>
+                <th>Description</th>
+                <th style="width: 100px; text-align: center;">Vie (PV)</th>
+                <th style="width: 180px;">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for character_class in character_classes %}
+                <tr>
+                    <td><strong>#{{ character_class.id }}</strong></td>
+                    <td>
+                    <span style="color: #9e2a1f; font-weight: bold; font-size: 1.1em;">
+                        {{ character_class.name }}
+                    </span>
+                    </td>
+                    <td class="description-cell">
+                        {{ character_class.description|length > 100 ? character_class.description|slice(0, 100) ~ '...' : character_class.description }}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="dice-badge">d{{ character_class.healthDice }}</span>
+                    </td>
+                    <td class="actions-cell">
+                        <a href="{{ path('app_character_class_show', {'id': character_class.id}) }}">👁️ Voir</a>
+                        <a href="{{ path('app_character_class_edit', {'id': character_class.id}) }}">✍️ Modif.</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="empty-msg">Aucune classe n'a été consignée dans le grimoire.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

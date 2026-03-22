@@ -1,0 +1,17 @@
+{# templates/skill/_delete_form.html.twig #}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/admin_delete.css') }}">
+{% endblock %}
+
+<form method="post"
+      action="{{ path('app_skill_delete', {'id': skill.id}) }}"
+      onsubmit="return confirm('Voulez-vous vraiment effacer cette compétence du grimoire ?');"
+      class="delete-form">
+
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ skill.id) }}">
+
+    <button class="btn-delete">
+        🗑️ Supprimer
+    </button>
+</form>

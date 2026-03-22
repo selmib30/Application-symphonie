@@ -1,0 +1,86 @@
+.admin-container {
+    margin: 2em auto;
+    max-width: 800px;
+    width: 95%;
+    background-color: #fcf5e8;
+    padding: 30px;
+    border: 2px solid #4a3728;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.header-section {
+    border-bottom: 2px solid #e2d1b3;
+    margin-bottom: 1.5em;
+    padding-bottom: 10px;
+}
+
+.header-section h1 {
+    color: #4a3728;
+    font-family: 'serif';
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.info-table {
+    width: 100%;
+    margin-bottom: 2em;
+    border-collapse: collapse;
+}
+
+.info-table th {
+    text-align: left;
+    width: 250px;
+    color: #9e2a1f; /* Rouge sang pour les labels */
+    text-transform: uppercase;
+    font-size: 0.85em;
+    padding: 15px 0;
+    border-bottom: 1px solid #e2d1b3;
+}
+
+.info-table td {
+    padding: 15px 0;
+    border-bottom: 1px solid #e2d1b3;
+    color: #333;
+    font-weight: 500;
+}
+
+.ability-highlight {
+    background-color: #4a3728;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.actions-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.btn-action {
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.btn-back {
+    background-color: #e2d1b3;
+    color: #4a3728 !important;
+}
+
+.btn-edit {
+    background-color: #4a3728;
+    color: #fcf5e8 !important;
+}
+
+.btn-back:hover, .btn-edit:hover {
+    opacity: 0.8;
+}

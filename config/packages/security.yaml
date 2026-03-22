@@ -28,6 +28,9 @@ security:
         - { path: ^/party/\d+/(join|leave), roles: ROLE_USER }
         - { path: ^/party/new, roles: ROLE_USER }
         - { path: ^/deconnexion, roles: ROLE_USER }
+        - { path: ^/race, roles: ROLE_ADMIN }
+        - { path: ^/character/class, roles: ROLE_ADMIN }
+        - { path: ^/skill, roles: ROLE_ADMIN }
 
 when@test:
     security:

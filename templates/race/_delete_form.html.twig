@@ -1,0 +1,14 @@
+<head>
+    {% block stylesheets %}
+        {# Les styles ici seront présents sur TOUTES les pages #}
+        <link rel="stylesheet" href="{{ asset('styles/admin_delete.css') }}">
+    {% endblock %}
+</head>
+
+<form method="post" action="{{ path('app_race_delete', {'id': race.id}) }}" onsubmit="return confirm('Es-tu sûr de vouloir bannir cette race du grimoire ?');" style="display: inline-block;">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ race.id) }}">
+    <button class="btn-delete">
+        🗑️ Supprimer
+    </button>
+</form>
+

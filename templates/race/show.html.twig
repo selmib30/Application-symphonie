@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la Race - Admin{% endblock %}
+
+{% block body %}
+    <head>
+        {% block stylesheets %}
+            {# Les styles ici seront présents sur TOUTES les pages #}
+            <link rel="stylesheet" href="{{ asset('styles/admin_show.css') }}">
+        {% endblock %}
+    </head>
+
+    <div class="admin-container">
+        <div class="header-section">
+            <h1>Fiche de la Race : {{ race.name }}</h1>
+        </div>
+
+        <table class="info-table">
+            <tbody>
+            <tr>
+                <th>Identifiant unique</th>
+                <td><strong>#{{ race.id }}</strong></td>
+            </tr>
+            <tr>
+                <th>Nom de la race</th>
+                <td><span style="font-size: 1.2em; font-weight: bold;">{{ race.name }}</span></td>
+            </tr>
+            <tr>
+                <th>Description détaillée</th>
+                <td>{{ race.description }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="actions-bar">
+            <a href="{{ path('app_race_index') }}" class="btn-action btn-back">⬅ Retour à la liste</a>
+            <a href="{{ path('app_race_edit', {'id': race.id}) }}" class="btn-action btn-edit">✍️ Modifier</a>
+
+            <div style="margin-left: auto;">
+                {{ include('race/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

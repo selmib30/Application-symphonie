@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la Classe - Admin{% endblock %}
+
+{% block body %}
+    {% block stylesheets %}
+        {# On charge le CSS spécifique à l'édition #}
+        <link rel="stylesheet" href="{{ asset('styles/admin_edit.css') }}">
+    {% endblock %}
+
+    <div class="admin-container">
+        <div class="header-section">
+            <h1>Modifier la Classe : {{ character_class.name }}</h1>
+            <span style="color: #999; font-size: 0.8em;">ID #{{ character_class.id }}</span>
+        </div>
+
+        <div class="form-wrapper">
+            {# On utilise le formulaire stylisé que tu as déjà configuré #}
+            {{ include('character_class/_form.html.twig', {'button_label': 'Mettre à jour la Classe'}) }}
+        </div>
+
+        <div class="footer-actions">
+            <a href="{{ path('app_character_class_index') }}" class="link-back">⬅ Retour au Grimoire des Classes</a>
+
+            {# Formulaire de suppression rouge/discret #}
+            {{ include('character_class/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

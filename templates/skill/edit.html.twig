@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la Compétence - Admin{% endblock %}
+
+{% block stylesheets %}
+    {# On charge le CSS spécifique à l'édition #}
+    <link rel="stylesheet" href="{{ asset('styles/admin_edit.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="admin-container">
+        <div class="header-section">
+            <h1>Modifier : {{ skill.name }}</h1>
+            <span style="color: #999; font-size: 0.8em;">SKILL #{{ skill.id }}</span>
+        </div>
+
+        <div class="form-wrapper">
+            {{ include('skill/_form.html.twig', {'button_label': 'Mettre à jour la compétence'}) }}
+        </div>
+
+        <div class="footer-actions">
+            <a href="{{ path('app_skill_index') }}" class="link-back">⬅ Retour à la liste des compétences</a>
+            {{ include('skill/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/admin_form.css') }}">
+{% endblock %}
+
+{{ form_start(form) }}
+<div class="forge-form-content">
+    {# Symfony injecte ici les classes CSS via le fichier de config ou manuellement #}
+    {{ form_widget(form) }}
+</div>
+
+<div style="margin-top: 20px; border-top: 1px solid #e2d1b3; padding-top: 15px;">
+    <button class="btn-save">
+        📜 {{ button_label|default('Enregistrer dans le Grimoire') }}
+    </button>
+</div>
+{{ form_end(form) }}

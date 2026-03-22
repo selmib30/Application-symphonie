@@ -14,8 +14,7 @@
     </head>
     <body>
         <header class="site-header">
-            <a class="site-logo" href="{{ path('home') }}">Forge des Heros</a>
-            <nav class="site-nav">
+            <a class="site-logo" href="{{ path('home') }}">Forge des Heros</a><nav class="site-nav">
                 <a href="{{ path('home') }}">Accueil</a>
                 <a href="{{ path('party_index') }}">Groupes</a>
                 {% if app.user %}
@@ -24,6 +23,19 @@
                 {% else %}
                     <a href="{{ path('app_login') }}">Connexion</a>
                     <a href="{{ path('app_register') }}">Inscription</a>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="admin-dropdown">
+                        <span class="admin-label">🛠️ Administration</span>
+                        <div class="admin-items">
+                            <a href="{{ path('app_race_index') }}">Races</a>
+                            <a href="{{ path('app_character_class_index') }}">Classes</a>
+                            <a href="{{ path('app_skill_index') }}">Compétences</a>
+                            <div class="admin-separator"></div>
+                            <a href="{{ path('app_admin_user_index') }}">Utilisateurs</a>
+                        </div>
+                    </div>
                 {% endif %}
             </nav>
         </header>
@@ -36,4 +48,5 @@
 
         {% block body %}{% endblock %}
     </body>
+
 </html>

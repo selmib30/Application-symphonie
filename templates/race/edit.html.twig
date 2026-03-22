@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la Race - Admin{% endblock %}
+
+{% block body %}
+    <head>
+        {% block stylesheets %}
+            {# Les styles ici seront présents sur TOUTES les pages #}
+            <link rel="stylesheet" href="{{ asset('styles/admin_edit.css') }}">
+        {% endblock %}
+    </head>
+
+    <div class="admin-container">
+        <div class="header-section">
+            <h1>Modifier : {{ race.name }}</h1>
+            <span style="color: #999; font-size: 0.8em;">ID #{{ race.id }}</span>
+        </div>
+
+        <div class="form-wrapper">
+            {{ include('race/_form.html.twig', {'button_label': 'Mettre à jour le Grimoire'}) }}
+        </div>
+
+        <div class="footer-actions">
+            <a href="{{ path('app_race_index') }}" class="link-back">⬅ Retour à la liste</a>
+
+            {# Le bouton de suppression stylisé qu'on a fait juste avant #}
+            {{ include('race/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Classe - Admin{% endblock %}
+
+{% block stylesheets %}
+    {# On réutilise le CSS de création pour garder l'unité visuelle #}
+    <link rel="stylesheet" href="{{ asset('styles/admin_new.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="admin-container">
+        <div class="header-section">
+            <h1>Forger une Nouvelle Classe</h1>
+        </div>
+
+        <div class="form-wrapper">
+            {# On appelle le formulaire stylisé avec le bouton 📜 #}
+            {{ include('character_class/_form.html.twig') }}
+        </div>
+
+        <div class="footer-actions">
+            <a href="{{ path('app_character_class_index') }}" class="link-back">
+                ⬅ Retour à la liste des Classes
+            </a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Races - Admin{% endblock %}
+
+{% block body %}
+    <head>
+        {% block stylesheets %}
+            {# Les styles ici seront présents sur TOUTES les pages #}
+            <link rel="stylesheet" href="{{ asset('styles/admin_index.css') }}">
+        {% endblock %}
+    </head>
+
+    <div class="admin-container">
+        <div class="header-section">
+            <h1>Grimoire des Races</h1>
+            <a href="{{ path('app_race_new') }}" class="btn-create">+ Ajouter une race</a>
+        </div>
+
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th style="width: 50px;">ID</th>
+                <th style="width: 150px;">Nom</th>
+                <th>Description</th>
+                <th style="width: 150px;">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for race in races %}
+                <tr>
+                    <td><strong>#{{ race.id }}</strong></td>
+                    <td><span style="color: #9e2a1f; font-weight: bold;">{{ race.name }}</span></td>
+                    <td class="description-cell">{{ race.description|slice(0, 150) ~ '...' }}</td>
+                    <td class="actions-cell">
+                        <a href="{{ path('app_race_show', {'id': race.id}) }}">👁️ Voir</a>
+                        <a href="{{ path('app_race_edit', {'id': race.id}) }}">✍️ Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="empty-msg">Aucune race n'a été forgée pour le moment.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

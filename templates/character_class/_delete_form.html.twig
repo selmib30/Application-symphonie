@@ -1,0 +1,18 @@
+{# templates/character_class/_delete_form.html.twig #}
+
+{% block stylesheets %}
+    {# On réutilise le même fichier CSS pour garder la cohérence graphique #}
+    <link rel="stylesheet" href="{{ asset('styles/admin_delete.css') }}">
+{% endblock %}
+
+<form method="post"
+      action="{{ path('app_character_class_delete', {'id': character_class.id}) }}"
+      onsubmit="return confirm('Voulez-vous vraiment bannir cette classe de la guilde ?');"
+      class="delete-form">
+
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ character_class.id) }}">
+
+    <button class="btn-delete">
+        🗑️ Supprimer la classe
+    </button>
+</form>

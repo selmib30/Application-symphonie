@@ -1,0 +1,19 @@
+<head>
+    {% block stylesheets %}
+        {# Les styles ici seront présents sur TOUTES les pages #}
+        <link rel="stylesheet" href="{{ asset('styles/admin_form.css') }}">
+    {% endblock %}
+</head>
+
+{{ form_start(form) }}
+<div class="forge-form-content">
+    {# Symfony génère automatiquement les labels et les inputs ici #}
+    {{ form_widget(form) }}
+</div>
+
+<div style="margin-top: 25px; border-top: 1px solid #e2d1b3; padding-top: 20px;">
+    <button class="btn-save">
+        📜 {{ button_label|default('Enregistrer dans le Grimoire') }}
+    </button>
+</div>
+{{ form_end(form) }}

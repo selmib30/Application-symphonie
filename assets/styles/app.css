@@ -334,4 +334,59 @@ a {
     .hero-card {
         transform: none;
     }
+
+    /* Conteneur principal aligné avec les autres liens */
+    .admin-dropdown {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    /* Style du texte "Administration" */
+    .admin-label {
+        color: #4a3728; /* Marron identique à ton thème */
+        cursor: pointer;
+        padding: 5px 10px;
+        font-weight: 500;
+    }
+
+    /* Le menu déroulant CACHÉ par défaut */
+    .admin-items {
+        display: none;
+        position: absolute;
+        top: 100%; /* S'affiche juste en dessous */
+        left: 0;
+        background-color: #fcf5e8; /* Fond beige de ton site */
+        border: 1px solid #4a3728;
+        min-width: 160px;
+        z-index: 1000;
+        box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+    }
+
+    /* Style des liens à l'intérieur du menu */
+    .admin-items a {
+        color: #4a3728 !important;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        font-size: 0.9rem;
+        text-align: left;
+    }
+
+    .admin-items a:hover {
+        background-color: #f2e4cf;
+    }
+
+    /* LA MAGIE : Affiche le menu quand on survole le conteneur */
+    .admin-dropdown:hover .admin-items {
+        display: block;
+    }
+
+    /* Petite ligne de séparation */
+    .admin-separator {
+        height: 1px;
+        background-color: #4a3728;
+        margin: 5px 0;
+        opacity: 0.2;
+    }
 }

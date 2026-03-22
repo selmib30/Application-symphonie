@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Compétence - Admin{% endblock %}
+
+{% block stylesheets %}
+    {# On charge le CSS de création #}
+    <link rel="stylesheet" href="{{ asset('styles/admin_new.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="admin-container">
+        <div class="header-section">
+            <h1>Inscrire une Compétence</h1>
+        </div>
+
+        <div class="form-wrapper">
+            {# On utilise le formulaire avec le bouton parchemin 📜 #}
+            {{ include('skill/_form.html.twig') }}
+        </div>
+
+        <div class="footer-actions">
+            <a href="{{ path('app_skill_index') }}" class="link-back">⬅ Retour au Grimoire des Compétences</a>
+        </div>
+    </div>
+{% endblock %}

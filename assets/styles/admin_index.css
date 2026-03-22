@@ -1,0 +1,96 @@
+/* public/css/admin_index.css */
+.admin-container {
+    margin: 2em auto;
+    max-width: 950px;
+    width: 95%;
+    background-color: #fcf5e8;
+    padding: 30px;
+    border: 2px solid #4a3728;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2em;
+    border-bottom: 2px solid #e2d1b3;
+    padding-bottom: 10px;
+}
+
+.header-section h1 {
+    color: #4a3728;
+    margin: 0;
+    font-family: 'serif';
+    text-transform: uppercase;
+    font-size: 1.8rem;
+}
+
+.btn-create {
+    background-color: #9e2a1f;
+    color: white !important;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-create:hover {
+    background-color: #7a2018;
+}
+
+/* Style de la table D&D */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.data-table th {
+    background-color: #4a3728;
+    color: #fcf5e8;
+    padding: 12px;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 0.85em;
+}
+
+.data-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e2d1b3;
+    vertical-align: middle;
+}
+
+/* Badge pour les caractéristiques (Ability) */
+.ability-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: #4a3728;
+    color: #fcf5e8;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Liens d'actions */
+.actions-cell a {
+    margin-right: 15px;
+    color: #4a3728;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 0.85em;
+}
+
+.actions-cell a:hover {
+    text-decoration: underline;
+}
+
+.empty-msg {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-style: italic;
+}

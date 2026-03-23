@@ -1,0 +1,16 @@
+{% block stylesheets %}
+    {# On réutilise le même fichier CSS pour garder la cohérence graphique #}
+    <link rel="stylesheet" href="{{ asset('styles/delete.css') }}">
+{% endblock %}
+
+<form method="post"
+      action="{{ path('app_character_delete', {'id': character.id}) }}"
+      onsubmit="return confirm('Es-tu certain de vouloir bannir ce personnage de ton grimoire ?');"
+      style="display: inline-block;">
+
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ character.id) }}">
+
+    <button class="btn-delete">
+        Supprimer
+    </button>
+</form>

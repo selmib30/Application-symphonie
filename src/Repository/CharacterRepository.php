@@ -11,6 +11,27 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CharacterRepository extends ServiceEntityRepository
 {
+    public function findByFilters(?string $name, ?string $race, ?int $minLevel): array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        if ($name) {
+            $qb->andWhere('c.name LIKE :name')
+                ->setParameter('name', '%'.$name.'%');
+        }
+
+        if ($race) {
+            $qb->andWhere('c.race = :race')
+                ->setParameter('race', $race);
+        }
+
+        if ($minLevel) {
+            $qb->andWhere('c.level >= :minLevel')
+                ->setParameter('minLevel', $minLevel);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Character::class);

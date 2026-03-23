@@ -1,0 +1,18 @@
+/* Bouton de suppression spécifique */
+.btn-delete {
+    background-color: transparent;
+    color: #9e2a1f;
+    border: 1px solid #9e2a1f;
+    padding: 8px 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: #9e2a1f;
+    color: white;
+}

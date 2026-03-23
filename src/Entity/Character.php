@@ -21,7 +21,7 @@ class Character
 
     #[ORM\Column]
     #[Assert\Range(min: 1, max: 20)] // Force la contrainte du tableau (1-20)
-    private ?int $level = null;
+    private ?int $level = 1;
 
     #[ORM\Column]
     private ?int $strength = null;

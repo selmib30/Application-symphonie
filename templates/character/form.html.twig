@@ -1,0 +1,23 @@
+<div class="form-container">
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('styles/form.css') }}">
+    {% endblock %}
+    <h2 class="form-title">Informations du Personnage</h2>
+
+    {{ form_start(form) }}
+    {# On peut rendre les champs un par un pour plus de contrôle #}
+    <div class="character-form">
+        {{ form_widget(form) }}
+    </div>
+
+    <div class="mt-4">
+        <button class="btn-save">
+            {{ button_label|default('Enregistrer le Personnage') }}
+        </button>
+
+        <a href="{{ path('character_index') }}" class="btn-back">
+            Retour à la liste
+        </a>
+    </div>
+    {{ form_end(form) }}
+</div>

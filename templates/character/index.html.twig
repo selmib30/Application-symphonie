@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Personnages{% endblock %}
+
+{% block stylesheets %}
+<style>
+    body { font-family: sans-serif; max-width: 960px; margin: 0 auto; padding: 20px; }
+    .search-bar {
+        background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;
+        padding: 16px; margin-bottom: 24px; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;
+    }
+    .search-bar label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px; }
+    .search-bar input, .search-bar select {
+        padding: 7px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;
+    }
+    .search-bar .field { display: flex; flex-direction: column; }
+    .btn { display: inline-block; padding: 7px 16px; border-radius: 4px; text-decoration: none; cursor: pointer; border: none; font-size: 14px; }
+    .btn-primary { background: #007bff; color: white; }
+    .btn-secondary { background: #6c757d; color: white; }
+    .btn-success { background: #28a745; color: white; }
+    .btn-warning { background: #ffc107; color: #000; }
+    .btn-danger { background: #dc3545; color: white; }
+
+    .character-grid { display: flex; flex-wrap: wrap; gap: 20px; }
+    .character-card { border: 1px solid #ccc; border-radius: 8px; padding: 16px; width: 230px; background: #fafafa; }
+    .character-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 4px; margin-bottom: 10px; }
+    .avatar-placeholder { width: 100%; height: 150px; background: #ddd; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 55px; margin-bottom: 10px; }
+    .character-card h3 { margin: 0 0 6px; font-size: 16px; }
+    .stats-mini { font-size: 12px; color: #555; margin: 4px 0; }
+    .hp-badge { background: #dc3545; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+    .flash-success { background: #d4edda; color: #155724; padding: 10px; border-radius: 4px; margin-bottom: 16px; }
+    .flash-error { background: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-bottom: 16px; }
+    .results-count { color: #666; font-size: 14px; margin-bottom: 12px; }
+    .active-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .filter-tag { background: #007bff; color: white; padding: 3px 10px; border-radius: 12px; font-size: 12px; }
+</style>
+{% endblock %}
+
+{% block body %}
+<h1>⚔️ Mes Personnages</h1>
+
+{% for flash in app.flashes('success') %}
+    <div class="flash-success">{{ flash }}</div>
+{% endfor %}
+{% for flash in app.flashes('error') %}
+    <div class="flash-error">{{ flash }}</div>
+{% endfor %}
+
+{# ===== BARRE DE RECHERCHE ET FILTRES (paramètres GET) ===== #}
+<form method="GET" action="{{ path('character_index') }}" class="search-bar">
+    <div class="field">
+        <label for="name">🔍 Recherche par nom</label>
+        <input type="text" id="name" name="name" value="{{ filters.name }}" placeholder="ex: Aragorn">
+    </div>
+
+    <div class="field">
+        <label for="class">🧙 Classe</label>
+        <select id="class" name="class">
+            <option value="">Toutes les classes</option>
+            {% for class in classes %}
+                <option value="{{ class.id }}" {% if filters.class == class.id %}selected{% endif %}>
+                    {{ class.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="field">
+        <label for="race">🧝 Race</label>
+        <select id="race" name="race">
+            <option value="">Toutes les races</option>
+            {% for race in races %}
+                <option value="{{ race.id }}" {% if filters.race == race.id %}selected{% endif %}>
+                    {{ race.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Filtrer</button>
+    {% if filters.name or filters.class or filters.race %}
+        <a href="{{ path('character_index') }}" class="btn btn-secondary">✕ Réinitialiser</a>
+    {% endif %}
+</form>
+
+    {% if filters.name or filters.class or filters.race %}
+        <div class="active-filters">
+            <p>Filtres actifs :</p>
+            {# You can add logic here to display specific tags for name, class, or race #}
+        </div>
+    {% endif %}
+
+    {# Don't forget to close your 'body' block if it's not closed further down! #}
+{% endblock %}

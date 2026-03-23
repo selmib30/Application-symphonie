@@ -12,9 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/character')]
 #[IsGranted('ROLE_USER')]
@@ -149,6 +149,15 @@ class CharacterController extends AbstractController
         ]);
     }
 
+    #[Route('/api/class/{id}', name: 'character_api_class')]
+    public function apiClass(int $id, CharacterClassRepository $repo): JsonResponse
+    {
+        $class = $repo->find($id);
+        if (!$class) {
+            return new JsonResponse(['error' => 'Not found'], 404);
+        }
+        return new JsonResponse(['healthDice' => $class->getHealthDice()]);
+    }
     #[Route('/{id}/edit', name: 'character_edit')]
     public function edit(
         Character $character,
@@ -245,13 +254,5 @@ class CharacterController extends AbstractController
         return $this->redirectToRoute('character_index');
     }
 
-    #[Route('/api/class/{id}', name: 'character_api_class')]
-    public function apiClass(int $id, CharacterClassRepository $repo): JsonResponse
-    {
-        $class = $repo->find($id);
-        if (!$class) {
-            return new JsonResponse(['error' => 'Not found'], 404);
-        }
-        return new JsonResponse(['healthDice' => $class->getHealthDice()]);
-    }
+
 }

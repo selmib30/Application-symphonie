@@ -1,0 +1,283 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block stylesheets %}
+<style>
+    body { font-family: sans-serif; max-width: 750px; margin: 0 auto; padding: 20px; }
+    h1 { margin-bottom: 24px; }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-weight: bold; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-row { display: flex; align-items: center; gap: 10px; }
+    .stat-row label { flex: 1; font-weight: bold; }
+    .stat-row input { width: 70px; padding: 6px; text-align: center; border: 1px solid #ccc; border-radius: 4px; }
+    .stat-cost { font-size: 13px; color: #555; min-width: 60px; }
+    .stat-mod { font-size: 13px; color: #007bff; min-width: 50px; }
+
+    #point-buy-bar {
+        background: #f0f0f0; border-radius: 8px; padding: 14px;
+        margin: 16px 0; border: 2px solid #ccc;
+    }
+    #point-buy-bar.valid { border-color: #28a745; background: #d4edda; }
+    #point-buy-bar.invalid { border-color: #dc3545; background: #f8d7da; }
+    #points-remaining { font-size: 22px; font-weight: bold; }
+
+    #hp-preview {
+        background: #fff3cd; border: 1px solid #ffc107;
+        border-radius: 6px; padding: 12px; margin: 16px 0;
+        font-size: 16px;
+    }
+    #hp-preview strong { font-size: 24px; color: #dc3545; }
+
+    .avatar-preview { margin-top: 8px; }
+    .avatar-preview img { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 2px solid #ccc; }
+
+    .btn { padding: 10px 22px; border-radius: 4px; text-decoration: none; cursor: pointer; border: none; font-size: 15px; }
+    .btn-primary { background: #007bff; color: white; }
+    .btn-secondary { background: #6c757d; color: white; }
+
+    .flash-error { background: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-bottom: 16px; }
+    .error-list { color: #dc3545; font-size: 13px; margin: 4px 0; }
+
+    hr { border: none; border-top: 1px solid #eee; margin: 24px 0; }
+</style>
+{% endblock %}
+
+{% block body %}
+<h1>{{ title }}</h1>
+
+{% for flash in app.flashes('error') %}
+    <div class="flash-error">{{ flash }}</div>
+{% endfor %}
+
+{{ form_start(form, { attr: { enctype: 'multipart/form-data', novalidate: 'novalidate' } }) }}
+
+<div class="form-group">
+    {{ form_label(form.name) }}
+    {{ form_widget(form.name) }}
+    {{ form_errors(form.name) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.race) }}
+    {{ form_widget(form.race) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.characterClass) }}
+    {{ form_widget(form.characterClass) }}
+</div>
+
+<hr>
+<h2>🎲 Caractéristiques — Point Buy</h2>
+
+<div id="point-buy-bar">
+    Points restants : <span id="points-remaining">27</span> / 27
+    <div id="pb-warning" style="margin-top:6px; font-size:13px; display:none; color:#721c24;">
+        ⚠️ Vous devez dépenser exactement 27 points pour valider le formulaire.
+    </div>
+</div>
+
+<p style="font-size:13px; color:#555;">
+    Chaque caractéristique commence à 8. Valeurs autorisées : 8–15.<br>
+    Coût : 8=0, 9=1, 10=2, 11=3, 12=4, 13=5, 14=7, 15=9
+</p>
+
+<div class="stats-grid">
+    {% set stats = [
+        { field: form.strength,     label: 'Force (FOR)' },
+        { field: form.dexterity,    label: 'Dextérité (DEX)' },
+        { field: form.constitution, label: 'Constitution (CON)' },
+        { field: form.intelligence, label: 'Intelligence (INT)' },
+        { field: form.wisdom,       label: 'Sagesse (SAG)' },
+        { field: form.charisma,     label: 'Charisme (CHA)' },
+    ] %}
+    {% for stat in stats %}
+    <div class="stat-row">
+        <label>{{ stat.label }}</label>
+        {{ form_widget(stat.field) }}
+        <span class="stat-cost" id="cost-{{ stat.field.vars.id }}">coût: 0</span>
+        <span class="stat-mod" id="mod-{{ stat.field.vars.id }}">+0</span>
+    </div>
+    {% endfor %}
+</div>
+
+<div id="hp-preview">
+    ❤️ Points de vie calculés automatiquement : <strong id="hp-value">—</strong>
+    <span style="font-size:13px; color:#555; margin-left:8px;" id="hp-formula"></span>
+</div>
+
+<hr>
+<h2>🖼️ Avatar</h2>
+
+<div class="form-group">
+    {{ form_label(form.avatarFile) }}
+    {{ form_widget(form.avatarFile, { attr: { accept: 'image/*', id: 'avatarFileInput' } }) }}
+    {{ form_errors(form.avatarFile) }}
+    <div class="avatar-preview" id="avatar-preview-container" style="display:none;">
+        <img id="avatar-preview-img" src="" alt="Aperçu">
+    </div>
+    {% if character.image is defined and character.image %}
+        <p style="margin-top:8px; font-size:13px;">Avatar actuel :</p>
+        <img src="{{ asset(character.image) }}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:2px solid #ccc;">
+    {% endif %}
+</div>
+
+<hr>
+<div style="display: flex; gap: 12px;">
+    <button type="submit" class="btn btn-primary" id="submit-btn">💾 Enregistrer</button>
+    <a href="{{ path('character_index') }}" class="btn btn-secondary">Annuler</a>
+</div>
+
+{{ form_end(form) }}
+
+<script>
+// ===== POINT BUY COSTS (D&D 5e) =====
+const POINT_COST = { 8:0, 9:1, 10:2, 11:3, 12:4, 13:5, 14:7, 15:9 };
+const TOTAL_POINTS = 27;
+
+// IDs des champs de stats
+const STAT_IDS = [
+    'character_strength',
+    'character_dexterity',
+    'character_constitution',
+    'character_intelligence',
+    'character_wisdom',
+    'character_charisma',
+];
+
+function modifier(score) {
+    return Math.floor((score - 10) / 2);
+}
+
+function formatMod(mod) {
+    return (mod >= 0 ? '+' : '') + mod;
+}
+
+function updatePointBuy() {
+    let totalUsed = 0;
+    let valid = true;
+
+    STAT_IDS.forEach(id => {
+        const input = document.getElementById(id);
+        const val = parseInt(input.value) || 8;
+        const cost = POINT_COST[val];
+        const mod = modifier(val);
+
+        // Afficher le coût et le modificateur
+        const costEl = document.getElementById('cost-' + id);
+        const modEl = document.getElementById('mod-' + id);
+        if (costEl) costEl.textContent = 'coût: ' + (cost !== undefined ? cost : '?');
+        if (modEl) modEl.textContent = formatMod(mod);
+
+        if (cost === undefined || val < 8 || val > 15) valid = false;
+        else totalUsed += cost;
+    });
+
+    const remaining = TOTAL_POINTS - totalUsed;
+    const bar = document.getElementById('point-buy-bar');
+    const remEl = document.getElementById('points-remaining');
+    const warning = document.getElementById('pb-warning');
+    const submitBtn = document.getElementById('submit-btn');
+
+    remEl.textContent = remaining;
+
+    if (remaining === 0 && valid) {
+        bar.className = 'valid';
+        warning.style.display = 'none';
+        submitBtn.disabled = false;
+    } else {
+        bar.className = 'invalid';
+        warning.style.display = 'block';
+        submitBtn.disabled = true;
+    }
+
+    // Recalcul HP
+    updateHP();
+}
+
+// ===== HP AUTO-CALCULATION =====
+let currentHealthDice = null;
+
+async function fetchHealthDice(classId) {
+    if (!classId) return;
+    try {
+        const resp = await fetch('/character/api/class/' + classId);
+        const data = await resp.json();
+        currentHealthDice = data.healthDice;
+        updateHP();
+    } catch (e) {
+        currentHealthDice = null;
+    }
+}
+
+function updateHP() {
+    const conInput = document.getElementById('character_constitution');
+    const hpEl = document.getElementById('hp-value');
+    const hpFormula = document.getElementById('hp-formula');
+
+    if (!conInput || currentHealthDice === null) {
+        hpEl.textContent = '—';
+        hpFormula.textContent = '';
+        return;
+    }
+
+    const con = parseInt(conInput.value) || 8;
+    const mod = modifier(con);
+    const hp = Math.max(1, currentHealthDice + mod);
+
+    hpEl.textContent = hp + ' PV';
+    hpFormula.textContent = `(dé de vie : d${currentHealthDice} + modificateur CON : ${formatMod(mod)})`;
+}
+
+// ===== AVATAR PREVIEW =====
+document.getElementById('avatarFileInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+            document.getElementById('avatar-preview-img').src = ev.target.result;
+            document.getElementById('avatar-preview-container').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// ===== INITIALISATION =====
+STAT_IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+        // Forcer la valeur initiale à 8 si vide
+        if (!el.value) el.value = 8;
+        el.addEventListener('input', () => {
+            // Clamp la valeur
+            let v = parseInt(el.value);
+            if (isNaN(v)) v = 8;
+            if (v < 8) el.value = 8;
+            if (v > 15) el.value = 15;
+            updatePointBuy();
+        });
+        el.addEventListener('change', updatePointBuy);
+    }
+});
+
+// Écouter le changement de classe pour récupérer le dé de vie
+const classSelect = document.getElementById('character_characterClass');
+if (classSelect) {
+    classSelect.addEventListener('change', function() {
+        fetchHealthDice(this.value);
+    });
+    // Charge dès le départ si une classe est déjà sélectionnée
+    if (classSelect.value) {
+        fetchHealthDice(classSelect.value);
+    }
+}
+
+// Calcul initial
+updatePointBuy();
+</script>
+{% endblock %}

@@ -18,12 +18,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/party')]
 class PartyController extends AbstractController
 {
+    // =====================================================================
+    // TACHE 3 : Filtre des groupes complets / avec places disponibles (GET)
+    // =====================================================================
     #[Route('', name: 'party_index')]
-    #[IsGranted('ROLE_USER')]
-    public function index(PartyRepository $partyRepository): Response
+    public function index(Request $request, PartyRepository $partyRepository): Response
     {
+        $filter = $request->query->get('filter'); // 'full', 'available', ou null
+        $parties = $partyRepository->findWithFilter($filter);
+
         return $this->render('party/index.html.twig', [
-            'parties' => $partyRepository->findAll(),
+            'parties'       => $parties,
+            'currentFilter' => $filter,
         ]);
     }
 

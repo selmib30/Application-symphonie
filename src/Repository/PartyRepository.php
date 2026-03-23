@@ -16,6 +16,25 @@ class PartyRepository extends ServiceEntityRepository
         parent::__construct($registry, Party::class);
     }
 
+    // src/Repository/PartyRepository.php
+
+    public function findWithFilter(?string $filter): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.characters', 'c')
+            ->addSelect('c');
+
+        if ($filter === 'full') {
+            // Groupes où le nombre de personnages est égal au maxSize
+            $qb->andWhere('SIZE(p.characters) >= p.maxSize');
+        } elseif ($filter === 'available') {
+            // Groupes où il reste de la place
+            $qb->andWhere('SIZE(p.characters) < p.maxSize');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Party[] Returns an array of Party objects
     //     */

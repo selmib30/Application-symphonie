@@ -33,6 +33,28 @@ class PartyController extends AbstractController
         ]);
     }
 
+    #[Route('/new', name: 'party_new')]
+    #[IsGranted('ROLE_USER')]
+    public function new(Request $request, EntityManagerInterface $em): Response
+    {
+        $party = new Party();
+        $party->setUser($this->getUser());
+        $form = $this->createForm(PartyType::class, $party);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($party);
+            $em->flush();
+
+            return $this->redirectToRoute('party_show', ['id' => $party->getId()]);
+        }
+
+        return $this->render('party/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
     #[Route('/{id}', name: 'party_show')]
     #[IsGranted('ROLE_USER')]
     public function show(Party $party, CharacterRepository $characterRepository): Response
@@ -76,25 +98,5 @@ class PartyController extends AbstractController
     }
 
 
-    #[Route('/new', name: 'party_new')]
-    #[IsGranted('ROLE_USER')]
-    public function new(Request $request, EntityManagerInterface $em): Response
-    {
-        $party = new Party();
-        $party->setUser($this->getUser());
-        $form = $this->createForm(PartyType::class, $party);
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($party);
-            $em->flush();
-
-            return $this->redirectToRoute('party_show', ['id' => $party->getId()]);
-        }
-
-        return $this->render('party/new.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
 }

@@ -29,6 +29,10 @@ class Skill
     #[ORM\ManyToMany(targetEntity: CharacterClass::class, mappedBy: 'skills')]
     private Collection $characterClasses;
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
     public function __construct()
     {
         $this->characterClasses = new ArrayCollection();

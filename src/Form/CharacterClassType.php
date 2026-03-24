@@ -19,9 +19,11 @@ class CharacterClassType extends AbstractType
             ->add('healthDice')
             ->add('skills', EntityType::class, [
                 'class' => Skill::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name', // On affiche le NOM de la compétence
                 'multiple' => true,
-                'required' => false,
+                'expanded' => true,      // 'true' transforme la liste en cases à cocher (plus ergonomique)
+                'label' => 'Compétences de classe',
+                'by_reference' => false, // Important pour que Symfony appelle addSkill/removeSkill
             ])
         ;
     }

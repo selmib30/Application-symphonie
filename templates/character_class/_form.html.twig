@@ -1,4 +1,4 @@
-{# templates/character_class/form.html.twig #}
+{# templates/character_class/_form.html.twig #}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('styles/admin_form.css') }}">
@@ -6,8 +6,25 @@
 
 {{ form_start(form) }}
 <div class="forge-form-content">
-    {# Les champs du formulaire (Nom, Description, Stats, etc.) #}
-    {{ form_widget(form) }}
+    {# Champs standards #}
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.healthDice) }}
+
+    {# Section des compétences personnalisée #}
+    <div class="skills-container">
+        <span class="skills-title">Compétences de classe</span>
+
+        <div id="character_class_skills">
+            {% for skill_field in form.skills %}
+                <div class="skill-item">
+                    {{ form_widget(skill_field) }}
+                    {{ form_label(skill_field) }}
+                </div>
+            {% endfor %}
+        </div>
+        {{ form_errors(form.skills) }}
+    </div>
 </div>
 
 <div style="margin-top: 20px; border-top: 1px solid #e2d1b3; padding-top: 15px;">

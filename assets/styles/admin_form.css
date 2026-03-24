@@ -1,6 +1,6 @@
 /* public/css/admin_form.css */
 
-/* Conteneur principal du formulaire */
+/* --- Configuration Générale du Formulaire --- */
 .forge-form-content {
     display: flex;
     flex-direction: column;
@@ -8,12 +8,11 @@
     margin-bottom: 20px;
 }
 
-/* Style des lignes (Label + Input) générées par Symfony */
 .forge-form-content div {
     margin-bottom: 10px;
 }
 
-/* Style des Labels */
+/* Style des Labels par défaut (Nom, Description, etc.) */
 .forge-form-content label {
     display: block;
     color: #4a3728;
@@ -24,8 +23,8 @@
     font-family: serif;
 }
 
-/* Style des Inputs, Textareas et Selects */
-.forge-form-content input,
+/* Style des entrées de texte et zones de saisie */
+.forge-form-content input[type="text"],
 .forge-form-content textarea,
 .forge-form-content select {
     width: 100%;
@@ -39,7 +38,6 @@
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Effet au focus sur les champs */
 .forge-form-content input:focus,
 .forge-form-content textarea:focus {
     outline: none;
@@ -47,7 +45,62 @@
     box-shadow: 0 0 5px rgba(74, 55, 40, 0.2);
 }
 
-/* Le bouton de validation (Le bouton Save) */
+/* --- Section des Compétences (Alignement Case + Nom) --- */
+.skills-container {
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.skills-title {
+    color: #4a3728;
+    font-family: 'serif';
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+    display: block;
+    border-bottom: 1px solid #e2d1b3;
+    padding-bottom: 5px;
+}
+
+/* Conteneur de la liste des compétences */
+#character_class_skills {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Structure de chaque ligne : force l'alignement horizontal */
+.skill-item {
+    display: flex;
+    align-items: center; /* Aligne la case et le texte sur le même axe vertical */
+    gap: 12px; /* Espace entre la case et le texte */
+    padding: 4px 0;
+}
+
+/* La petite case à cocher */
+.skill-item input[type="checkbox"] {
+    width: 14px !important;
+    height: 14px !important;
+    margin: 0 !important;
+    cursor: pointer;
+    flex-shrink: 0; /* Empêche la case de se déformer */
+}
+
+/* Le nom de la compétence (en ligne avec la case) */
+.skill-item label {
+    display: inline-block !important; /* Annule le 'display: block' général */
+    margin: 0 !important;
+    padding: 0 !important;
+    text-transform: uppercase;
+    font-family: 'serif';
+    font-size: 0.9rem;
+    color: #4a3728;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* --- Bouton de Validation --- */
 .btn-save {
     background-color: #4a3728;
     color: #fcf5e8;
@@ -67,8 +120,4 @@
 .btn-save:hover {
     background-color: #35271d;
     transform: translateY(-1px);
-}
-
-.btn-save:active {
-    transform: translateY(0);
 }

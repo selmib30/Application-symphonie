@@ -20,6 +20,7 @@
                 <th style="width: 50px;">ID</th>
                 <th style="width: 150px;">Nom</th>
                 <th>Description</th>
+                <th>Compétences</th>
                 <th style="width: 100px; text-align: center;">Vie (PV)</th>
                 <th style="width: 180px;">Actions</th>
             </tr>
@@ -35,6 +36,22 @@
                     </td>
                     <td class="description-cell">
                         {{ character_class.description|length > 100 ? character_class.description|slice(0, 100) ~ '...' : character_class.description }}
+                    </td>
+                    <td>
+                        {% for skill in character_class.skills %}
+                            <span class="skill-badge" style="
+                            background-color: #e0e0e0;
+                            padding: 2px 8px;
+                            border-radius: 12px;
+                            font-size: 0.85em;
+                            margin-right: 5px;
+                            display: inline-block;
+                            border: 1px solid #ccc;">
+                            {{ skill.name }}
+                            </span>
+                        {% else %}
+                            <span style="color: #999; font-style: italic;">Aucune</span>
+                        {% endfor %}
                     </td>
                     <td style="text-align: center;">
                         <span class="dice-badge">d{{ character_class.healthDice }}</span>

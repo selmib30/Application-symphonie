@@ -19,11 +19,14 @@ echo 'DATABASE_URL="sqlite:///%kernel.project_dir%/var/data_dev.db"' >> .env.loc
 
 # 4) Creer la base et appliquer les migrations
 
-php bin/console doctrine:database:create --if-not-exists
+php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate -n
 
+# 5) Installer DoctrineFixturesBundle
 
-# 5) Charger les donnees de demo (fixtures)
+composer require doctrine/doctrine-fixtures-bundle
+
+# 6) Charger les donnees de demo (fixtures)
 
 php bin/console doctrine:fixtures:load -n
 
@@ -33,23 +36,4 @@ php -S 127.0.0.1:8000 -t public
 
 # Option B: Symfony CLI (si installee)
 
-symfony server:start -d
 symfony open:local
-
-# Commandes utiles
-
-# Vider le cache
-php bin/console cache:clear
-
-# Voir les routes
-php bin/console debug:router
-
-# Lancer les tests
-php bin/phpunit
-
-# Reinitialiser proprement la base locale
-
-rm -f var/data_dev.db
-php bin/console doctrine:database:create --if-not-exists
-php bin/console doctrine:migrations:migrate -n
-php bin/console doctrine:fixtures:load -n

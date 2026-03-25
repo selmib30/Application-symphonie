@@ -2,22 +2,88 @@
 
 {% block title %}Liste des Personnages{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .filter-bar {
+            background: #fdf6e3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #e6d8ad;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-weight: bold; color: #9e2a1f; font-size: 13px; }
+        .filter-input { padding: 6px; border: 1px solid #ccc; border-radius: 4px; }
+
+        .character-table { width: 100%; border-collapse: collapse; background: #fffaf2; border-radius: 8px; overflow: hidden; }
+        .character-table th { background-color: #9e2a1f; color: white; padding: 12px; text-align: left; }
+        .character-table td { padding: 12px; border-bottom: 1px solid #ddd; vertical-align: middle; }
+
+        .btn-action { display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 14px; margin-right: 5px; color: white !important; border: none; cursor: pointer; }
+        .btn-view { background-color: #17a2b8; }
+        .btn-edit { background-color: #ffc107; color: #212529 !important; }
+        .btn-filter { background-color: #9e2a1f; color: white; padding: 8px 15px; border-radius: 4px; cursor: pointer; border: none; font-weight: bold; }
+        .avatar-img { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid #9e2a1f; }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Mes Personnages</h1>
-            <a href="{{ path('character_new') }}" class="btn btn-primary">Créer un nouveau personnage</a>
+    <div style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h1>L'Annuaire des Héros</h1>
+            <a href="{{ path('character_new') }}" style="background-color: #28a745; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+                + Créer un personnage
+            </a>
         </div>
 
-        <table class="table table-hover">
-            <thead class="table-dark">
+        {# Formulaire de filtres #}
+        <form method="get" action="{{ path('character_index') }}" class="filter-bar">
+            <div class="filter-group">
+                <label>Nom</label>
+                <input type="text" name="name" value="{{ filters.name }}" class="filter-input" placeholder="Rechercher...">
+            </div>
+            <div class="filter-group">
+                <label>Race</label>
+                <select name="race" class="filter-input">
+                    <option value="">Toutes</option>
+                    {% for race in races %}
+                        <option value="{{ race.id }}" {{ filters.race == race.id ? 'selected' : '' }}>{{ race.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Classe</label>
+                <select name="class" class="filter-input">
+                    <option value="">Toutes</option>
+                    {% for class in classes %}
+                        <option value="{{ class.id }}" {{ filters.class == class.id ? 'selected' : '' }}>{{ class.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Groupes</label>
+                <select name="availability" class="filter-input">
+                    <option value="">Tous</option>
+                    <option value="available" {{ filters.availability == 'available' ? 'selected' : '' }}>Places disponibles</option>
+                    <option value="full" {{ filters.availability == 'full' ? 'selected' : '' }}>Complets</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-filter">Filtrer</button>
+            <a href="{{ path('character_index') }}" style="font-size: 11px; color: #777;">Reset</a>
+        </form>
+
+        <table class="character-table">
+            <thead>
             <tr>
                 <th>Avatar</th>
                 <th>Nom</th>
                 <th>Race</th>
                 <th>Classe</th>
-                <th>Niveau</th>
-                <th>Points de Vie</th>
+                <th>Niv.</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -25,39 +91,27 @@
             {% for character in characters %}
                 <tr>
                     <td>
-                        {# Affichage de l'URL externe stockée dans character.image #}
                         {% if character.image %}
-                            <img src="{{ character.image }}"
-                                 alt="Avatar de {{ character.name }}"
-                                 style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 1px solid #ddd;">
+                            <img src="{{ character.image }}" class="avatar-img">
                         {% else %}
-                            <div style="width: 50px; height: 50px; background-color: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #999;">
-                                N/A
-                            </div>
+                            <div style="width: 40px; height: 40px; background: #ccc; border-radius: 50%;"></div>
                         {% endif %}
                     </td>
                     <td><strong>{{ character.name }}</strong></td>
-                    <td>{{ character.race ? character.race.name : 'Non définie' }}</td>
-                    <td>{{ character.characterClass ? character.characterClass.name : 'Non définie' }}</td>
+                    <td>{{ character.race ? character.race.name : 'N/A' }} </td>
+                    <td>{{ character.characterClass ? character.characterClass.name : 'N/A' }} </td>
                     <td>{{ character.level }}</td>
-                    <td>{{ character.healthPoints }} HP</td>
                     <td>
-                        <div class="btn-group" role="group">
-                            {# Correction du lien vers la fiche (Route character_show) #}
-                            <a href="{{ path('character_show', {'id': character.id}) }}" class="btn btn-sm btn-outline-info">Voir</a>
-
-                            {# Lien vers l'édition (Route character_edit) #}
-                            <a href="{{ path('character_edit', {'id': character.id}) }}" class="btn btn-sm btn-outline-warning">Modifier</a>
-
-                            {# Formulaire de suppression (inclut le jeton CSRF) #}
-                            {{ include('character/_delete_form.html.twig') }}
+                        <div style="display: flex;">
+                            <a href="{{ path('character_show', {'id': character.id}) }}" class="btn-action btn-view">Voir</a>
+                            {% if app.user and character.user == app.user %}
+                                <a href="{{ path('character_edit', {'id': character.id}) }}" class="btn-action btn-edit">Modifier</a>
+                            {% endif %}
                         </div>
                     </td>
                 </tr>
             {% else %}
-                <tr>
-                    <td colspan="7" class="text-center">Vous n'avez pas encore créé de personnage.</td>
-                </tr>
+                <tr><td colspan="6" style="text-align: center; padding: 20px;">Aucun héros trouvé.</td></tr>
             {% endfor %}
             </tbody>
         </table>

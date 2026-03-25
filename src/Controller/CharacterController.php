@@ -23,23 +23,25 @@ class CharacterController extends AbstractController
         CharacterClassRepository $classRepository,
         RaceRepository $raceRepository
     ): Response {
+        // Récupération des paramètres de filtrage depuis l'URL (GET)
         $name    = $request->query->get('name');
         $classId = $request->query->get('class') ? (int) $request->query->get('class') : null;
         $raceId  = $request->query->get('race')  ? (int) $request->query->get('race')  : null;
+        $availability = $request->query->get('availability'); // Filtre groupe
 
-        $characters = $characterRepository->findWithFilters($name, $classId, $raceId);
-
-        // Sécurité : Uniquement les personnages de l'utilisateur connecté
-        $characters = array_values(array_filter(
-            $characters,
-            fn($c) => $c->getUser() === $this->getUser()
-        ));
+        // On récupère tous les personnages correspondants aux filtres (vue publique)
+        $characters = $characterRepository->findWithFilters($name, $classId, $raceId, $availability);
 
         return $this->render('character/index.html.twig', [
             'characters' => $characters,
             'classes'    => $classRepository->findAll(),
             'races'      => $raceRepository->findAll(),
-            'filters'    => ['name' => $name, 'class' => $classId, 'race' => $raceId],
+            'filters'    => [
+                'name' => $name,
+                'class' => $classId,
+                'race' => $raceId,
+                'availability' => $availability
+            ],
         ]);
     }
 
@@ -53,7 +55,6 @@ class CharacterController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Calcul des points de vie
             $hp = 10 + ($character->getConstitution() - 10) + ($character->getLevel() * 5);
             $character->setHealthPoints($hp);
 
@@ -72,6 +73,7 @@ class CharacterController extends AbstractController
     #[Route('/{id}/edit', name: 'character_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Character $character, EntityManagerInterface $entityManager): Response
     {
+        // Sécurité : Seul le propriétaire modifie son personnage
         if ($character->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException("Accès refusé.");
         }
@@ -92,23 +94,21 @@ class CharacterController extends AbstractController
             'form'      => $form,
         ]);
     }
+
     #[Route('/{id}', name: 'character_show', methods: ['GET'])]
     public function show(Character $character): Response
     {
-        // Vérification de sécurité (optionnel mais conseillé)
-        if ($character->getUser() !== $this->getUser()) {
-            throw $this->createAccessDeniedException();
-        }
-
+        // Suppression de la restriction getUser() pour permettre la vue par tous
         return $this->render('character/show.html.twig', [
             'character' => $character,
         ]);
     }
+
     #[Route('/{id}', name: 'character_delete', methods: ['POST'])]
     public function delete(Request $request, Character $character, EntityManagerInterface $entityManager): Response
     {
         if ($character->getUser() !== $this->getUser()) {
-            throw $this->createAccessDeniedException();
+            throw $this->createAccessDeniedException("Action non autorisée.");
         }
 
         if ($this->isCsrfTokenValid('delete'.$character->getId(), $request->request->get('_token'))) {

@@ -1,67 +1,98 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Personnage{% endblock %}
+{% block title %}Détails du Personnage{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Réutilisation des styles de la forge */
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: opacity 0.2s;
+            border: none;
+            cursor: pointer;
+            color: white !important;
+        }
+        .btn-action:hover { opacity: 0.8; }
+        .btn-view { background-color: #17a2b8; } /* Bleu pour le retour */
+        .btn-edit { background-color: #ffc107; color: #212529 !important; } /* Jaune pour modifier */
+
+        .actions-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            padding: 20px 0;
+            border-top: 1px solid #ddd;
+        }
+
+        .detail-table {
+            width: 100%;
+            max-width: 600px;
+            border-collapse: collapse;
+        }
+        .detail-table th {
+            text-align: left;
+            padding: 10px;
+            width: 150px;
+            color: #9e2a1f;
+        }
+        .detail-table td {
+            padding: 10px;
+        }
+        .character-preview {
+            max-width: 200px;
+            border-radius: 8px;
+            border: 3px solid #9e2a1f;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-    <h1>Détails du Personnage</h1>
+    <div style="padding: 20px; max-width: 800px; margin: 0 auto;">
+        <h1>Détails du Personnage</h1>
 
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ character.id }}</td>
-        </tr>
-        <tr>
-            <th>Nom</th>
-            <td>{{ character.name }}</td>
-        </tr>
-        <tr>
-            <th>Niveau</th>
-            <td>{{ character.level }}</td>
-        </tr>
-        <tr>
-            <th>Force</th>
-            <td>{{ character.strength }}</td>
-        </tr>
-        <tr>
-            <th>Dextérité</th>
-            <td>{{ character.dexterity }}</td>
-        </tr>
-        <tr>
-            <th>Constitution</th>
-            <td>{{ character.constitution }}</td>
-        </tr>
-        <tr>
-            <th>Intelligence</th>
-            <td>{{ character.intelligence }}</td>
-        </tr>
-        <tr>
-            <th>Sagesse</th>
-            <td>{{ character.wisdom }}</td>
-        </tr>
-        <tr>
-            <th>Charisme</th>
-            <td>{{ character.charisma }}</td>
-        </tr>
-        <tr>
-            <th>Points de Vie</th>
-            <td>{{ character.healthPoints }}</td>
-        </tr>
-        <tr>
-            <th>Image</th>
-            <td>{{ character.image }}</td>
-        </tr>
-        </tbody>
-    </table>
+        <table class="detail-table">
+            <tbody>
+            <tr><th>Id</th><td>{{ character.id }}</td></tr>
+            <tr><th>Nom</th><td><strong>{{ character.name }}</strong></td></tr>
+            <tr><th>Niveau</th><td>{{ character.level }}</td></tr>
+            <tr><th>Force</th><td>{{ character.strength }}</td></tr>
+            <tr><th>Dextérité</th><td>{{ character.dexterity }}</td></tr>
+            <tr><th>Constitution</th><td>{{ character.constitution }}</td></tr>
+            <tr><th>Intelligence</th><td>{{ character.intelligence }}</td></tr>
+            <tr><th>Sagesse</th><td>{{ character.wisdom }}</td></tr>
+            <tr><th>Charisme</th><td>{{ character.charisma }}</td></tr>
+            <tr><th>Points de Vie</th><td>{{ character.healthPoints }} HP</td></tr>
+            <tr>
+                <th>Image</th>
+                <td>
+                    {% if character.image %}
+                        <img src="{{ character.image }}" alt="Image du personnage" class="character-preview">
+                    {% else %}
+                        <span>Aucune image</span>
+                    {% endif %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-    <div class="actions">
-        <a href="{{ path('character_index') }}" class="btn btn-secondary">Retour à la liste</a>
+        <div class="actions-container">
+            <a href="{{ path('character_index') }}" class="btn-action btn-view">
+                Retour à la liste
+            </a>
 
-        {# Correction : Utilisation du nom de route exact 'character_edit' au lieu de 'app_character_edit' #}
-        <a href="{{ path('character_edit', {'id': character.id}) }}" class="btn btn-primary">Modifier</a>
+            <a href="{{ path('character_edit', {'id': character.id}) }}" class="btn-action btn-edit">
+                Modifier
+            </a>
 
-        {{ include('character/_delete_form.html.twig') }}
+            {# Le formulaire de suppression s'aligne grâce au flexbox #}
+            {{ include('character/_delete_form.html.twig') }}
+        </div>
     </div>
-
-
 {% endblock %}

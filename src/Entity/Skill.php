@@ -15,16 +15,16 @@ class Skill
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['skill:read', 'class:read'])]
+    #[Groups((['party:read', 'character:read','skill:read', 'class:read']))]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['skill:read', 'class:read'])]
+    #[Groups((['party:read', 'character:read','skill:read', 'class:read']))]
     private ?string $name = null;
 
     #[ORM\Column(length: 3)]
     #[Assert\Choice(choices: ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA'])]
-    #[Groups(['skill:read', 'class:read'])]
+    #[Groups((['party:read', 'character:read','skill:read', 'class:read']))]
     private ?string $ability = null;
 
     /**

@@ -16,27 +16,27 @@ class CharacterClass
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['class:read'])]
+    #[Groups((['party:read', 'character:read','skill:read', 'class:read']))]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['class:read'])]
+    #[Groups((['party:read', 'character:read','skill:read', 'class:read']))]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['class:read'])]
+    #[Groups((['party:read', 'character:read','skill:read', 'class:read']))]
     private ?string $description = null;
 
     #[ORM\Column]
     #[Assert\Positive]
-    #[Groups(['class:read'])]
+    #[Groups((['party:read', 'character:read','skill:read', 'class:read']))]
     private ?int $healthDice = null;
 
     /**
      * @var Collection<int, Skill>
      */
     #[ORM\ManyToMany(targetEntity: Skill::class, inversedBy: 'characterClasses')]
-    #[Groups(['class:read'])]
+    #[Groups((['party:read', 'character:read','skill:read', 'class:read']))]
     private Collection $skills;
 
     /**

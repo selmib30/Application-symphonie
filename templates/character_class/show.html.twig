@@ -28,6 +28,18 @@
                 <td><p class="description-text">{{ character_class.description }}</p></td>
             </tr>
             <tr>
+                <th>Compétences associées</th>
+                <td>
+                    {% if character_class.skills is not empty %}
+                        {% for skill in character_class.skills %}
+                            <span class="ability-badge">{{ skill.name }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <span style="color: #999; font-style: italic;">Aucune compétence</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
                 <th>Dé de Vie</th>
                 <td><span class="dice-highlight">🎲 d{{ character_class.healthDice }}</span></td>
             </tr>

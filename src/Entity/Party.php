@@ -24,12 +24,12 @@ class Party
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['party:read'])]
+    #[Groups(['party:read', 'character:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
     #[Assert\Positive]
-    #[Groups(['party:read'])]
+    #[Groups(['party:read', 'character:read'])]
     private ?int $maxSize = null;
 
     #[ORM\ManyToOne(inversedBy: 'parties')]

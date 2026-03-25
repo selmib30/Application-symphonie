@@ -14,8 +14,10 @@ class ApiPartyController extends AbstractController
     #[Route('/api/v1/parties', name: 'api_parties_index', methods: ['GET'])]
     public function index(Request $request, PartyRepository $repository): JsonResponse
     {
-        $filter = $request->query->get('available'); // "true" pour disponibles uniquement
-        $parties = $repository->findWithAvailabilityFilter($filter);
+        $filter = $request->query->get('available');
+
+        // Change findWithAvailabilityFilter to findWithFilter
+        $parties = $repository->findWithFilter($filter);
 
         return $this->json(
             $parties,

@@ -25,6 +25,7 @@ security:
                 target: home
 
     access_control:
+        - { path: ^/party, roles: ROLE_USER }
         - { path: ^/party/\d+/(join|leave), roles: ROLE_USER }
         - { path: ^/party/new, roles: ROLE_USER }
         - { path: ^/deconnexion, roles: ROLE_USER }

@@ -15,16 +15,16 @@ class Character
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['character:read'])]
+    #[Groups(['party:read', 'character:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['character:read'])]
+    #[Groups(['party:read', 'character:read'])]
     private ?string $name = null;
 
     #[ORM\Column]
     #[Assert\Range(min: 1, max: 20)]
-    #[Groups(['character:read'])]
+    #[Groups(['party:read', 'character:read'])]
     private ?int $level = 1;
 
     #[ORM\Column]

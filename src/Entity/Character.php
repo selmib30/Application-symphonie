@@ -23,8 +23,9 @@ class Character
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Assert\Range(min: 1, max: 20)]
     #[Groups(['party:read', 'character:read'])]
-    private ?int $level = null;
+    private ?int $level = 1;
 
     #[ORM\Column]
     #[Groups(['character:read'])]

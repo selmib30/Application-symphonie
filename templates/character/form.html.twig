@@ -1,17 +1,30 @@
+{# templates/character/form.html.twig #}
 <div class="form-container">
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('styles/form.css') }}">
     {% endblock %}
+
     <h2 class="form-title">Informations du Personnage</h2>
 
     {{ form_start(form) }}
-    {# On peut rendre les champs un par un pour plus de contrôle #}
+
     <div class="character-form">
+        {# Affichage de l'aperçu si une URL d'image est présente #}
+        {% if character is defined and character.image %}
+            <div class="current-avatar" style="margin-bottom: 15px; text-align: center;">
+                <p>Aperçu de l'image :</p>
+                <img src="{{ character.image }}"
+                     alt="Avatar"
+                     style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #ddd;">
+            </div>
+        {% endif %}
+
+        {# Rendu automatique des champs, incluant le champ texte pour l'URL #}
         {{ form_widget(form) }}
     </div>
 
     <div class="mt-4">
-        <button class="btn-save">
+        <button class="btn-save" type="submit">
             {{ button_label|default('Enregistrer le Personnage') }}
         </button>
 

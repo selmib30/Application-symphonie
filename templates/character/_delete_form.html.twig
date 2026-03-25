@@ -4,7 +4,7 @@
 {% endblock %}
 
 <form method="post"
-      action="{{ path('app_character_delete', {'id': character.id}) }}"
+      action="{{ path('character_delete', {'id': character.id}) }}"
       onsubmit="return confirm('Es-tu certain de vouloir bannir ce personnage de ton grimoire ?');"
       style="display: inline-block;">
 

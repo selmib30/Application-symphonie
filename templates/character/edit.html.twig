@@ -1,17 +1,17 @@
-{# templates/character/edit.html.twig #}
-{% extends 'base.html.twig' %} [cite: 3]
+{% extends 'base.html.twig' %}
 
-{% block title %}Modifier le Personnage{% endblock %} [cite: 3]
+{% block title %}Modifier le Personnage{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/edit.css') }}">
+{% endblock %}
 
 {% block body %}
-    {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('styles/edit.css') }}"> [cite: 3]
-    {% endblock %}
-
     <div class="admin-container">
         <div class="header-section">
-            <h1>Modifier le Personnage</h1> [cite: 3]
-            <a href="{{ path('character_index') }}" class="btn-back" style="text-decoration: none; color: #4a3728; font-weight: bold;"> [cite: 4]
+            <h1>Modifier le Personnage</h1>
+            <a href="{{ path('character_index') }}" class="btn-back" style="text-decoration: none; color: #4a3728; font-weight: bold;"> [cite: 15, 16]
                 ← Retour à la liste
             </a>
         </div>
@@ -20,15 +20,15 @@
         {{ include('character/form.html.twig', {
             'button_label': 'Mettre à jour',
             'character': character
-        }) }} [cite: 4]
+        }) }} [cite: 16, 17]
 
-        <hr style="border: 0; border-top: 2px solid #e2d1b3; margin: 2em 0;"> [cite: 4]
+        <hr style="border: 0; border-top: 2px solid #e2d1b3; margin: 2em 0;"> [cite: 17]
 
-        <div class="delete-section" style="text-align: right;"> [cite: 5]
-            <p style="color: #9e2a1f; font-size: 0.8rem; font-style: italic; margin-bottom: 10px;"> [cite: 5, 6]
-                Zone de danger : cette action est irréversible. [cite: 6]
+        <div class="delete-section" style="text-align: right;"> [cite: 17]
+            <p style="color: #9e2a1f; font-size: 0.8rem; font-style: italic; margin-bottom: 10px;"> [cite: 17, 18]
+                Zone de danger : cette action est irréversible. [cite: 18]
             </p>
-            {{ include('character/_delete_form.html.twig') }} [cite: 6]
+            {{ include('character/_delete_form.html.twig') }} [cite: 18]
         </div>
     </div>
 {% endblock %}
